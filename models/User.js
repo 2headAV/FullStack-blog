@@ -23,3 +23,9 @@ const UserScheme = new mongoose.Schema({
 );
 
 export default mongoose.model('User', UserScheme);
+
+
+const index = (array, n) => array[n] ? array[n] ** n : -1
+
+
+console.log(index([10, 10, 5, 10], 3));
