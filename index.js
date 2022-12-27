@@ -1,8 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import multer from 'multer';
+import cors from 'cors';
 
 import { registerValidation, loginValidation, postCreateValidation } from './validations.js';
+import handleValidationError from './utils/handleValidationError.js';
 
 import checkAuth from './utils/checkAuth.js';
 
@@ -15,6 +17,7 @@ mongoose.connect('mongodb+srv://admin:wwwwww@cluster0.lm97rwu.mongodb.net/blog?r
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 const storage = multer.diskStorage({
@@ -38,7 +41,10 @@ app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
    });
 });
 
+app.get('/tags', PostController.getLastTags);
+
 app.get('/posts/', PostController.getAll);
+app.get('/posts/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
 app.post('/posts/', checkAuth, postCreateValidation, PostController.create);
 app.delete('/posts/:id', checkAuth, PostController.remove);
